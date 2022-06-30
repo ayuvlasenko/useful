@@ -1,0 +1,47 @@
+version: "3.9"
+
+services:
+  app:
+    image: "awesome/app"
+    build:
+      context: .
+      dockerfile: .dockerfile
+    ports:
+      - "${APP_PORT}:${APP_PORT}"
+    environment:
+      - APP_PORT
+      - TYPEORM_CONNECTION
+      - TYPEORM_HOST
+      - TYPEORM_PORT
+      - TYPEORM_USERNAME
+      - TYPEORM_PASSWORD
+      - TYPEORM_DATABASE
+      - TYPEORM_LOGGING
+      - TYPEORM_ENTITIES
+      - TYPEORM_MIGRATIONS
+      - TYPEORM_MIGRATIONS_DIR
+    restart: on-failure
+    depends_on:
+      - db
+
+  db:
+    image: "postgres:14-alpine"
+    ports:
+      - "${TYPEORM_PORT}:5432"
+    environment:
+      POSTGRES_DB: "${TYPEORM_DATABASE}"
+      POSTGRES_USER: "${TYPEORM_USERNAME}"
+      POSTGRES_PASSWORD: "${TYPEORM_PASSWORD}"
+      PGDATA: "/var/lib/postgresql/data"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+    volumes:
+      - "pgdata:/var/lib/postgresql/data"
+
+volumes:
+  pgdata:
