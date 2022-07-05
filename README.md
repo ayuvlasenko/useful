@@ -1,6 +1,3 @@
-# Useful things
-
-This repository contains different commands, files, which I don't want to
-lose.
+# Useful code, files, commands
 
 - [Docker](./docker)
