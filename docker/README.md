@@ -4,4 +4,4 @@
 
 - [MongoDB](./mongo)
 - [Postgres](./postgres)
-- [App with Postgres](./app-postgres)
+- [TypeORM app with Postgres](./typeorm-app-postgres)
